@@ -29,7 +29,7 @@ const createItem = async () => {
   try {
     await store.postData({
       url: `/checklist/${route.params.id}/item`,
-      data: { itemName: newItemName.value },
+      paramsg: { itemName: newItemName.value },
     })
     newItemName.value = ''
     await fetchData()
