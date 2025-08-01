@@ -1,0 +1,74 @@
+<script setup>
+import { ref, onMounted } from 'vue'
+import { useStore } from '@/stores'
+
+const store = useStore()
+const checklists = ref([])
+const loading = ref(false)
+const error = ref(null)
+
+const fetchData = async () => {
+  loading.value = true
+  error.value = null
+  try {
+    const res = await store.getData({ url: '/checklist' })
+    checklists.value = res.data.data || []
+  } catch (err) {
+    error.value = 'Gagal memuat checklist'
+  } finally {
+    loading.value = false
+  }
+}
+
+const handleDelete = async (id) => {
+  const konfirmasi = confirm('Yakin ingin menghapus checklist ini?')
+  if (!konfirmasi) return
+
+  try {
+    await store.deleteData({ url: `/checklist/${id}` })
+    fetchData()
+  } catch (err) {
+    const msg = err?.response?.data?.message
+    if (msg?.includes('ConstraintViolationException') || msg?.includes('FOREIGN KEY')) {
+      alert('Checklist tidak bisa dihapus karena masih memiliki item.')
+    } else {
+      alert('Gagal menghapus checklist.')
+    }
+  }
+}
+
+onMounted(() => {
+  fetchData()
+})
+</script>
+
+<template>
+  <div class="container py-5">
+    <h2 class="mb-4">Halaman Checklist</h2>
+
+    <div v-if="loading" class="text-muted">Memuat data...</div>
+    <div v-else-if="error" class="text-danger">{{ error }}</div>
+    <div v-else-if="checklists.length === 0" class="text-muted">Belum ada checklist.</div>
+    <ul v-else class="list-group">
+      <li
+        class="list-group-item d-flex justify-content-between align-items-center"
+        v-for="item in checklists"
+        :key="item.id"
+      >
+        {{ item.name }}
+        <!-- <router-link :to="`/checklists/${item.id}`" class="btn btn-sm btn-outline-secondary">
+          Lihat Detail
+        </router-link> -->
+        <button @click="handleDelete(item.id)" class="btn btn-sm rounded-cs btn-outline-danger">
+          Hapus
+        </button>
+      </li>
+    </ul>
+  </div>
+</template>
+
+<style scoped>
+.rounded-cs {
+  border-radius: 10px;
+}
+</style>
