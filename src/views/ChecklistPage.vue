@@ -54,12 +54,21 @@ onMounted(() => {
       <li v-for="checklist in checklists" :key="checklist.id" class="list-group-item">
         <div class="d-flex justify-content-between align-items-center">
           <strong>{{ checklist.name }}</strong>
-          <router-link
-            class="btn btn-sm btn-outline-primary"
-            :to="`/checklists/${checklist.id}/item`"
-          >
-            Detail
-          </router-link>
+
+          <div class="d-flex gap-2">
+            <router-link
+              class="btn btn-sm btn-outline-primary rounded-cs"
+              :to="`/checklists/${checklist.id}/item`"
+            >
+              Detail
+            </router-link>
+            <button
+              @click="handleDelete(checklist.id)"
+              class="btn btn-sm btn-outline-danger rounded-cs"
+            >
+              Hapus
+            </button>
+          </div>
         </div>
       </li>
     </ul>
