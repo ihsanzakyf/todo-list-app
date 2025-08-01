@@ -52,14 +52,8 @@ export const useStore = defineStore('main', {
     async putData({ url, params }) {
       const endpoint = this.baseUrl + url
       const options = this.getAuthHeaders()
-      let payload = params
       try {
-        if (payload instanceof FormData) {
-          payload.append('_method', 'PUT')
-        } else {
-          payload = { ...payload, _method: 'PUT' }
-        }
-        return await axios.post(endpoint, payload, options)
+        return await axios.put(endpoint, params, options)
       } catch (error) {
         this.handleError(error)
         throw error

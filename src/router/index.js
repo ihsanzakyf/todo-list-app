@@ -5,7 +5,6 @@ import RegisterPage from '@/views/RegisterPage.vue'
 import ChecklistPage from '@/views/ChecklistPage.vue'
 import ChecklistDetailPage from '@/views/ChecklistDetailPage.vue'
 import CreateChecklist from '@/views/CreateChecklist.vue'
-import CreateTodoItem from '@/views/CreateTodoItem.vue'
 import TodoItemDetailPage from '@/views/TodoItemDetailPage.vue'
 
 const routes = [
@@ -14,9 +13,13 @@ const routes = [
   { path: '/register', component: RegisterPage },
   { path: '/checklists', component: ChecklistPage },
   { path: '/checklists/create', component: CreateChecklist },
-  { path: '/checklists/:id', component: ChecklistDetailPage, props: true },
-  { path: '/checklists/:id/items/create', component: CreateTodoItem, props: true },
-  { path: '/items/:id', component: TodoItemDetailPage, props: true },
+  { path: '/checklists/:id/item', component: ChecklistDetailPage, props: true },
+  {
+    path: '/checklists/:checklistId/item/:itemId',
+    name: 'TodoItemDetailPage',
+    component: TodoItemDetailPage,
+    props: true,
+  },
 ]
 
 const router = createRouter({

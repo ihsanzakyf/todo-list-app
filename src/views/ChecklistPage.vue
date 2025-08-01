@@ -49,19 +49,18 @@ onMounted(() => {
     <div v-if="loading" class="text-muted">Memuat data...</div>
     <div v-else-if="error" class="text-danger">{{ error }}</div>
     <div v-else-if="checklists.length === 0" class="text-muted">Belum ada checklist.</div>
+
     <ul v-else class="list-group">
-      <li
-        class="list-group-item d-flex justify-content-between align-items-center"
-        v-for="item in checklists"
-        :key="item.id"
-      >
-        {{ item.name }}
-        <!-- <router-link :to="`/checklists/${item.id}`" class="btn btn-sm btn-outline-secondary">
-          Lihat Detail
-        </router-link> -->
-        <button @click="handleDelete(item.id)" class="btn btn-sm rounded-cs btn-outline-danger">
-          Hapus
-        </button>
+      <li v-for="checklist in checklists" :key="checklist.id" class="list-group-item">
+        <div class="d-flex justify-content-between align-items-center">
+          <strong>{{ checklist.name }}</strong>
+          <router-link
+            class="btn btn-sm btn-outline-primary"
+            :to="`/checklists/${checklist.id}/item`"
+          >
+            Detail
+          </router-link>
+        </div>
       </li>
     </ul>
   </div>
